@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatbot
+  template:
+    metadata:
+      labels:
+        app: chatbot
+    spec:
+      containers:
+      - name: chatbot
+        image: localhost:32000/chatbot-local
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: documents
+          mountPath: /app/documents
+      volumes:
+      - name: documents
+        persistentVolumeClaim:
+          claimName: docs-pvc
